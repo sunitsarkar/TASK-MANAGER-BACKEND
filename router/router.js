@@ -62,50 +62,35 @@ router.get("/tasks",auth,(req,res)=>{
     })
 });
 
-router.param("id",(req,res,next,id)=>{
-    Task.findById(id).exec().then((t)=>{
-        req.task=t;
-        req.id=id;
-        next();
-    });
+//delete
+router.delete('/tasks', (req, res) => {
+    const id = req.query.id;
+    Task.deleteOne({ _id: id })
+      .then(() => {
+        res.status(204).send('deleted');
+      })
+      .catch((error) => {
+        res.status(404).send({ error: "There is no such product id" });
+      });
+  });
 
-});
-
-router.get("/tasks/:id",(req,res)=>{
-    const task=req.task;
-    res.send(task)
-});
-
-router.delete("/tasks/:id",(req,res)=>{
-    const id=req.id;
-    console.log(id)
-    Task.deleteOne({ "_id" : ObjectId(`${id}`) });
-
-    res.status(204).send(id)
-});
-
-router.put("/tasks/:id",(req,res)=>{
-    const task=req.task;
-    const {title,is_completed}=req.body;
-
-    task.title=title;
-    task.is_completed=is_completed;
-
-    task.save().then((data,err)=>{
-        if(err){
-            res.status(404).send({ 
-                error: "There is no task at that id"
-            }
-            )
+  /////update
+  router.put('/tasks', (req, res) => {
+    const id = req.query.id;
+    const { task,ref } = req.body;
+  
+    Task.findByIdAndUpdate(id, { task,ref }, { new: true })
+      .then((updatedProduct) => {
+        if (updatedProduct) {
+          res.send(updatedProduct);
+        } else {
+          res.status(404).send({ error: "There is no such product id" });
         }
-    });
-    res.send(task)
-});
+      })
+      .catch((error) => {
+        res.status(500).send({ error: "Internal Server Error" });
+      });
+  });
 
-router.delete("/DELETE/v1/tasks",(req,res)=>{
-    const arr=req.body;
-    Task.deleteMany(arr);
-    res.status(204).send()
-})
 
 module.exports=router;
