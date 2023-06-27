@@ -5,7 +5,6 @@ const cors=require('cors');
 const app=express();
 const router=require('./router/router')
 
-
 const dburl="mongodb+srv://sunitsarkar:LwP8bgRq3VOKlHWI@cluster0.gxschpx.mongodb.net/?retryWrites=true&w=majority";
 
 mongoose.set('strictQuery',false);
@@ -20,9 +19,6 @@ app.use(cors());
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 app.use('/',router);
-
-
-
 
 app.listen(8000,()=>{
     console.log('app is running on port 8000')
