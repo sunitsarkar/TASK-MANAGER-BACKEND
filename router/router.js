@@ -47,7 +47,6 @@ router.post('/login',async (req,res)=>{
    }
 })
 
-////////////////////
 router.post('/tasks',auth,(req,res)=>{
     const task=new Task(req.body);
     task.save();
