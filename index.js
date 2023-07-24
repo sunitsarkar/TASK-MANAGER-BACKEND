@@ -6,7 +6,7 @@ const app=express();
 const router=require('./router/router')
 
 const dburl="mongodb+srv://sunitsarkar:LwP8bgRq3VOKlHWI@cluster0.gxschpx.mongodb.net/?retryWrites=true&w=majority";
-
+//db connection
 mongoose.set('strictQuery',false);
 mongoose.connect(dburl,{
     useNewUrlParser:true,
